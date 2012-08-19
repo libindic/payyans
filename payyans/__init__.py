@@ -1,4 +1,4 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
-from payyans import *
+from payyans import Payyans, getInstance
 
