@@ -34,6 +34,7 @@
 import sys  # കുന്തം
 import codecs  # കൊടച്ചക്രം
 import os  # ശീലക്കുട
+import normalizer
 
 
 '''
@@ -42,7 +43,7 @@ import os  # ശീലക്കുട
 '''
 
 
-class Payyans(SilpaModule):
+class Payyans():
 
     def __init__(self):
         self.input_filename = ""
@@ -50,9 +51,10 @@ class Payyans(SilpaModule):
         self.mapping_filename = ""
         self.rulesDict = None
         self.pdf = 0
+        self.normalizer = normalizer.getInstance()
 
     def Unicode2ASCII(self, unicode_text, font):
-        unicode_text = normalize(unicode_text)
+        unicode_text = self.normalizer.normalize(unicode_text)
         index = 0
         prebase_letter = ""
         ascii_text = ""
@@ -99,7 +101,7 @@ class Payyans(SilpaModule):
         return ascii_text
 
     def ASCII2Unicode(self, ascii_text, font):
-        ascii_text = normalize(ascii_text)
+        ascii_text = self.normalizer.normalize(ascii_text)
         index = 0
         post_index = 0
         prebase_letter = ""
