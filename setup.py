@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from setuptools import setup, find_packages
+from setuptools import setup,find_packages
 
 name = 'payyans'
 
@@ -12,12 +12,11 @@ setup(
     description = "ASCII to Unicode converter",
     author = 'Santhosh Thottingal',
     author_email = "santhosh.thottingal@gmail.com",
-    long_description = """This library helps to convert 
+    long_description = """This library helps to convert
 ascii texts to unicode.""",
-    packages=find_packages('.'),
-    package_data = {'.':['payyans/maps']},
+    packages=find_packages(),
     include_package_data = True,
-    setup_requires = ['setuptools'],
+    setup_requires = ['setuptools-git'],
     install_requires = ['setuptools', 'normalizer'],
     zip_safe = False,
     )
