@@ -6,7 +6,7 @@ name = 'payyans'
 
 setup(
     name = name,
-    version = "0.1",
+    version = "0.2",
     url = "http://silpa.org.in/payyans",
     license = "LGPL 3.0",
     description = "ASCII to Unicode converter",
