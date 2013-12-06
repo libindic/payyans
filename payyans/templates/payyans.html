@@ -44,49 +44,58 @@ $(document).ready(function() {
 {% endblock %}
 
 {% block content %}
-<div class="well">
-  <h2> ASCII - Unicode Conversion</h2></hr>
-  <p class="help-block">Enter the text for conversion in the below text area.
-  </p>
-  <form class="form-horizontal" action="" method="post">
-    <textarea  name='input_text' id='id1' rows="10" style="width: 98.5%;"></textarea>
-    <span class="help-block"></span>
-    <div class="control-group">
-    <label class="control-label" for="font">Select Font :</label>
-    <div class="controls">
-      <select id="font" name="font" style="width:12em;">
-        <option value="ambili">Ambili</option>
-        <option value="valluvar">Valluvar</option>
-        <option value="karthika">Karthika</option>
-        <option value="matweb">Mathrubhumi</option>
-        <option value="manorama">Manorama</option>
-        <option value="revathi">Revathi</option>
-        <option value="uma">Uma</option>
-        <option value="panchari">Panchari</option>
-        <option value="nandini">Nandini (ML-TT)</option>
-        <option value="haritha">Haritha</option>
-      </select>
-      </div>
+<div class="page-header">
+    <h1>ASCII - Unicode Conversion</h1>
+</div>
+
+
+<p class="help-block">Enter the text for conversion in the below text area.</p>
+
+<form action="" method="post">
+<div class="form-horizontal">
+    <div class="form-group">
+        <textarea name='input_text' id='id1' rows="10" class="form-control"></textarea>
     </div>
-    <div class="control-group">
-      <label class="control-label" for="direction">Select Direction: </label>
-      <div class="controls">
-        <select id="direction" name="direction" style="width:12em;">
-          <option value="a2u">ASCII to Unicode</option>
-          <option value="u2a">Unicode to ASCII</option>
-        </select>
-      </div>
+
+    <div class="form-group">
+        <label class="control-label col-sm-1" for="font">Font</label>
+
+        <div class="col-sm-3">
+            <select id="font" name="font" class="form-control">
+                <option value="ambili">Ambili</option>
+                <option value="valluvar">Valluvar</option>
+                <option value="karthika">Karthika</option>
+                <option value="matweb">Mathrubhumi</option>
+                <option value="manorama">Manorama</option>
+                <option value="revathi">Revathi</option>
+                <option value="uma">Uma</option>
+                <option value="panchari">Panchari</option>
+                <option value="nandini">Nandini (ML-TT)</option>
+                <option value="haritha">Haritha</option>
+            </select>
+        </div>
+
+        <label class="control-label col-sm-2" for="direction">Direction</label>
+
+        <div class="col-sm-3">
+            <select id="direction" name="direction" class="form-control">
+                <option value="a2u">ASCII to Unicode</option>
+                <option value="u2a">Unicode to ASCII</option>
+            </select>
+        </div>
+
+        <div class="col-sm-3">
+            <button class="btn btn-default pull-right" type="submit" id="Convert">Convert</button>
+        </div>
     </div>
-    <div class="control-group">
-      <div class="controls">
-        <button class="btn" type="submit" id="Convert">Convert</button>
-      </div>
-    </div>
-  </form>
-  <hr/>
-  <div id="progress" class="alert alert-info hide"></div>
-  <div id="successmessage" class="alert alert-success hide"></div>
-  <div id="errormessage" class="alert alert-error hide"></div>
-  <div id="result"></div>
+</form>
+
+
+<div id="progress" class="alert alert-info silpa-hide"></div>
+<div id="successmessage" class="alert alert-success silpa-hide"></div>
+<div id="errormessage" class="alert alert-error silpa-hide"></div>
+
+<p id="result"></p>
+
 </div>
 {% endblock %}
