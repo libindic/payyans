@@ -23,6 +23,7 @@
 # If you find any bugs or have any suggestions email:
 # santhosh.thottingal@gmail.com
 # URL: http://www.smc.org.in
+from __future__ import print_function
 
 '''
 പയ്യന്‍ ആളു തരികിടയാകുന്നു. ആസ്കി വേറൊരു തരികിടയും.
@@ -230,9 +231,9 @@ class Payyans():
                 '''ലൈനൊന്നും ല്യാ, മോശം.. ങും പോട്ടെ. വേറെ ലൈന്‍ പിടിക്കാം'''
             if(len(line.split("=")) != 2):
                     '''എന്തോ പ്രശ്നണ്ടു്. ന്നാ അതങ്ങടു തുറന്നു പറഞ്ഞേക്കാം'''
-                    print "Error: Syntax Error in the Ascii to Unicode Map " \
-                            "in line number ", line_number
-                    print "Line: " + text
+                    print("Error: Syntax Error in the Ascii to Unicode Map " \
+                            "in line number ", line_number)
+                    print("Line: " + text)
                     '''പരിപാടി നിര്‍ത്താം '''
                     return 2  # Error - Syntax error in Mapping file
             '''ഇടതന്‍'''
@@ -258,3 +259,4 @@ class Payyans():
 
 def getInstance():
     return Payyans()
+
