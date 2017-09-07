@@ -216,7 +216,7 @@ class Payyans():
             line_number = line_number + 1
             original_text = rules_file.readline()
             try:
-                text = unicode(original_text)
+                text = unicode(original_text)  # noqa: F821
             except BaseException:
                 text = original_text
             if text == "":
