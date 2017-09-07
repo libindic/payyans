@@ -16,3 +16,8 @@ class PayyansTest(TestCase):
         self.assertEqual(
             self.payyans.ASCII2Unicode(
                 "aebmfw", "ambili"), u"മലയാളം")
+
+    def test_unicode2ascii(self):
+        self.assertEqual(
+            self.payyans.Unicode2ASCII(
+                u"മലയാളം", "ambili"), u"aebmfw")
