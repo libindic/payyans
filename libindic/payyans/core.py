@@ -35,7 +35,7 @@ from __future__ import print_function
 import sys  # കുന്തം
 import codecs  # കൊടച്ചക്രം
 import os  # ശീലക്കുട
-import normalizer
+from libindic.normalizer import Normalizer
 
 
 '''
@@ -52,16 +52,15 @@ class Payyans():
         self.mapping_filename = ""
         self.rulesDict = None
         self.pdf = 0
-        self.normalizer = normalizer.getInstance()
+        self.normalizer = Normalizer()
 
     def Unicode2ASCII(self, unicode_text, font):
         unicode_text = self.normalizer.normalize(unicode_text)
         index = 0
-        prebase_letter = ""
         ascii_text = ""
         self.direction = "u2a"
-        self.mapping_filename = os.path.join(os.path.dirname(__file__), \
-                'maps', font + ".map")
+        self.mapping_filename = os.path.join(os.path.dirname(__file__),
+                                             'maps', font + ".map")
         self.rulesDict = self.LoadRules()
         while index < len(unicode_text):
             '''കൂട്ടക്ഷരങ്ങള്‍ക്കൊരു കുറുക്കുവഴി'''
@@ -76,15 +75,15 @@ class Payyans():
                     '''
                     if letter == 'ൈ':  # പിറകില്‍ രണ്ടു സാധനം പിടിപ്പിക്കുക
                         ascii_text = ascii_text[:-1] + ascii_letter + \
-                                ascii_text[-1:]
+                            ascii_text[-1:]
                     elif (letter == 'ോ') | (letter == 'ൊ') \
                             | (letter == 'ൌ'):  # മുമ്പിലൊന്നും പിറകിലൊന്നും
                         ascii_text = ascii_text[:-1] + ascii_letter[0] + \
-                                ascii_text[-1:] + ascii_letter[1]
+                            ascii_text[-1:] + ascii_letter[1]
                     elif (letter == 'െ') | (letter == 'േ') | \
                             (letter == '്ര'):  # പിറകിലൊന്നുമാത്രം
                         ascii_text = ascii_text[:-1] + ascii_letter + \
-                                ascii_text[-1:]
+                            ascii_text[-1:]
                     else:
                         ascii_text = ascii_text + ascii_letter
                     index = index + charNo
@@ -96,8 +95,8 @@ class Payyans():
                         break
                     '''നോക്കിയിട്ടു കിട്ടുന്നില്ല ബായി'''
                     ascii_letter = letter
-                    #ascii_text = ascii_text + ascii_letter
-                    #index = index+1
+                    # ascii_text = ascii_text + ascii_letter
+                    # index = index+1
 
         return ascii_text
 
@@ -110,8 +109,8 @@ class Payyans():
         unicode_text = ""
         next_ucode_letter = ""
         self.direction = "a2u"
-        self.mapping_filename = os.path.join(os.path.dirname(__file__), \
-                'maps', font + ".map")
+        self.mapping_filename = os.path.join(os.path.dirname(__file__),
+                                             'maps', font + ".map")
         self.rulesDict = self.LoadRules()
         while index < len(ascii_text):
             for charNo in [2, 1]:
@@ -133,14 +132,14 @@ class Payyans():
                                 if self.isPostbase(next_ucode_letter):
                                     postbase_letter = next_ucode_letter
                                     index = index + 1
-                        if  ((unicode_letter.encode('utf-8') == "എ") | \
+                        if ((unicode_letter.encode('utf-8') == "എ") |
                                 (unicode_letter.encode('utf-8') == "ഒ")):
                             unicode_text = unicode_text + postbase_letter + \
-                                    self.getVowelSign(prebase_letter, \
-                                    unicode_letter)
+                                self.getVowelSign(prebase_letter,
+                                                  unicode_letter)
                         else:
                             unicode_text = unicode_text + unicode_letter + \
-                                    postbase_letter + prebase_letter
+                                postbase_letter + prebase_letter
                         prebase_letter = ""
                         postbase_letter = ""
                     index = index + charNo
@@ -176,9 +175,9 @@ class Payyans():
          എന്നു പയ്യന്റെ ഗുരു പയ്യഗുരു പയ്യെ മൊഴിഞ്ഞിട്ടുണ്ടു്.
         '''
         unicode_letter = letter.encode('utf-8')
-        if ((unicode_letter == "േ") | \
-                (unicode_letter == "ൈ") | (unicode_letter == "ൊ") | \
-                (unicode_letter == "ോ") | (unicode_letter == "ൌ") | \
+        if ((unicode_letter == "േ") |
+                (unicode_letter == "ൈ") | (unicode_letter == "ൊ") |
+                (unicode_letter == "ോ") | (unicode_letter == "ൌ") |
                 (unicode_letter == "്ര") | (unicode_letter == "െ")):
             return True  # "ഇതു സത്യം... അ...സത്യം.... അസത്യം...!"
         else:
@@ -202,20 +201,24 @@ class Payyans():
         '''
         ഈ സംഭവമാണു് മാപ്പിങ്ങ് ഫയല്‍ എടുത്തു് വായിച്ചു പഠിക്കുന്നതു്.
         '''
-        #if(self.rulesDict):
+        # if(self.rulesDict):
         #    return self.rulesDict
         rules_dict = dict()
         line = []
         line_number = 0
-        rules_file = codecs.open(self.mapping_filename, encoding='utf-8', \
-                errors='ignore')
-        while 1:
+        rules_file = codecs.open(self.mapping_filename, encoding='utf-8',
+                                 errors='ignore')
+        while True:
             '''
             ലൈന്‍ നമ്പര്‍ , മാപ്പിങ്ങ് ഫയലില്‍ തെറ്റുണ്ടെങ്കില്‍
             പറയാന്‍ ആവശ്യാണു്
             '''
             line_number = line_number + 1
-            text = unicode(rules_file.readline())
+            original_text = rules_file.readline()
+            try:
+                text = unicode(original_text)
+            except BaseException:
+                text = original_text
             if text == "":
                 break
             '''കമന്റടിച്ചേ മത്യാവൂന്നു വെച്ചാ ആവാം. ഒട്ടും മുഷിയില്ല്യ'''
@@ -230,12 +233,12 @@ class Payyans():
                 continue
                 '''ലൈനൊന്നും ല്യാ, മോശം.. ങും പോട്ടെ. വേറെ ലൈന്‍ പിടിക്കാം'''
             if(len(line.split("=")) != 2):
-                    '''എന്തോ പ്രശ്നണ്ടു്. ന്നാ അതങ്ങടു തുറന്നു പറഞ്ഞേക്കാം'''
-                    print("Error: Syntax Error in the Ascii to Unicode Map " \
-                            "in line number ", line_number)
-                    print("Line: " + text)
-                    '''പരിപാടി നിര്‍ത്താം '''
-                    return 2  # Error - Syntax error in Mapping file
+                '''എന്തോ പ്രശ്നണ്ടു്. ന്നാ അതങ്ങടു തുറന്നു പറഞ്ഞേക്കാം'''
+                print("Error: Syntax Error in the Ascii to Unicode Map "
+                      "in line number ", line_number)
+                print("Line: " + text)
+                '''പരിപാടി നിര്‍ത്താം '''
+                return 2  # Error - Syntax error in Mapping file
             '''ഇടതന്‍'''
             lhs = line.split("=")[0]
             '''വലതന്‍'''
@@ -259,4 +262,3 @@ class Payyans():
 
 def getInstance():
     return Payyans()
-
