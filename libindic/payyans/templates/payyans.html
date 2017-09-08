@@ -15,13 +15,14 @@ $(document).ready(function() {
                 method: (direction == "a2u" ?
                     "payyans.ASCII2Unicode" : "payyans.Unicode2ASCII"),
                 params: [text, font],
-                id: ""
+                id: "jsonrpc",
+                jsonrpc: "2"
             };
 
         $.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
-            url: "JSONRPC",
+            url: "/api/JSONRPC",
             data: JSON.stringify(jsonRequest),
             dataType: "json",
             beforeSend:function(){
