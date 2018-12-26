@@ -1,1 +1,1 @@
--e git+https://github.com/libindic/normalizer.git#egg=libindic-normalizer
+-e git+https://github.com/libindic/normalizer.git#egg=libindic_normalizer
