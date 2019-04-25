@@ -10,6 +10,10 @@ to Unicode and vice-versa. More fonts can be added by placing their maps in
 `libindic/payyans/maps` folder.
 
 ## Installation
+### Using PIP
+  `$ pip install normalizer`
+
+### Manual installation
 1. Clone the repository `git clone https://github.com/libindic/payyans.git`
 2. Change to the cloned directory `cd payyans`
 3. Run setup.py to create installable source `python setup.py sdist`
