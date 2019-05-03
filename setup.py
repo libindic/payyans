@@ -1,8 +1,10 @@
 #!/usr/bin/env python
+
 from setuptools import setup
 
 setup(
-    setup_requires=['pbr'],
-    pbr=True
+    version="1.0.2",
+    zip_safe=False,
+    packages=['libindic.payyans'],
+    namespace_packages=['libindic']
 )
-
