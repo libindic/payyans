@@ -31,8 +31,7 @@ from __future__ import print_function
 അമേരിക്കാ-ഇറാഖ് യുദ്ധം താഴെപ്പറയും വിധമാകുന്നു.
 '''
 
-'''ആവശ്യത്തിനുള്ള കോപ്പുകള്‍ കൂട്ടുക '''
-import sys  # കുന്തം
+# ആവശ്യത്തിനുള്ള കോപ്പുകള്‍ കൂട്ടുക
 import codecs  # കൊടച്ചക്രം
 import os  # ശീലക്കുട
 from libindic.normalizer import Normalizer
@@ -132,14 +131,18 @@ class Payyans():
                                 if self.isPostbase(next_ucode_letter):
                                     postbase_letter = next_ucode_letter
                                     index = index + 1
-                        if ((unicode_letter.encode('utf-8') == "എ") |
-                                (unicode_letter.encode('utf-8') == "ഒ")):
-                            unicode_text = unicode_text + postbase_letter + \
-                                self.getVowelSign(prebase_letter,
-                                                  unicode_letter)
+                        if ((unicode_letter.encode('utf-8') == "എ")
+                                | (unicode_letter.encode('utf-8') == "ഒ")):
+                            vowel_sign = self.getVowelSign(prebase_letter,
+                                                           unicode_letter)
+                            unicode_text = (unicode_text
+                                            + postbase_letter
+                                            + vowel_sign)
                         else:
-                            unicode_text = unicode_text + unicode_letter + \
-                                postbase_letter + prebase_letter
+                            unicode_text = (unicode_text
+                                            + unicode_letter
+                                            + postbase_letter
+                                            + prebase_letter)
                         prebase_letter = ""
                         postbase_letter = ""
                     index = index + charNo
@@ -175,10 +178,8 @@ class Payyans():
          എന്നു പയ്യന്റെ ഗുരു പയ്യഗുരു പയ്യെ മൊഴിഞ്ഞിട്ടുണ്ടു്.
         '''
         unicode_letter = letter.encode('utf-8')
-        if ((unicode_letter == "േ") |
-                (unicode_letter == "ൈ") | (unicode_letter == "ൊ") |
-                (unicode_letter == "ോ") | (unicode_letter == "ൌ") |
-                (unicode_letter == "്ര") | (unicode_letter == "െ")):
+        prebase_letters = ["േ", "ൈ", "ൊ", "ോ", "ൌ", "്ര", "െ"]
+        if (unicode_letter in prebase_letters):
             return True  # "ഇതു സത്യം... അ...സത്യം.... അസത്യം...!"
         else:
             return False
@@ -251,6 +252,7 @@ class Payyans():
                 rules_dict[lhs] = rhs
             else:
                 rules_dict[rhs] = lhs
+        rules_file.close()
         return rules_dict
 
     def get_module_name(self):
