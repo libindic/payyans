@@ -27,4 +27,6 @@ to Unicode and vice-versa. More fonts can be added by placing their maps in
 tIcfw
 ```
 
-For more details read the [docs](http://payyans.rtfd.org/)
+[Watch this video to know more about what ASCII and Unicode encodings are](https://smc.org.in/articles/ascii-unicode-fonts)
+
+[Ask a question about this library](https://github.com/libindic/payyans/issues/)
