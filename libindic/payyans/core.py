@@ -61,6 +61,8 @@ class Payyans():
         self.mapping_filename = os.path.join(os.path.dirname(__file__),
                                              'maps', font + ".map")
         self.rulesDict = self.LoadRules()
+        if '്\u200c' in self.rulesDict:
+            self.rulesDict['്'] = self.rulesDict['്\u200c']
         while index < len(unicode_text):
             '''കൂട്ടക്ഷരങ്ങള്‍ക്കൊരു കുറുക്കുവഴി'''
             for charNo in [3, 2, 1]:
