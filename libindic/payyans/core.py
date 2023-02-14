@@ -67,7 +67,6 @@ class Payyans():
                 letter = unicode_text[index:index + charNo]
                 if letter in self.rulesDict:
                     ascii_letter = self.rulesDict[letter]
-                    letter = letter.encode('utf-8')
                     '''
                     കിട്ടിയ അക്ഷരങ്ങളുടെ അപ്പുറത്തും ഇപ്പുറത്തും
                     സ്വരചിഹ്നങ്ങള്‍ ഫിറ്റ് ചെയ്യാനുള്ള ബദ്ധപ്പാട്
