@@ -35,12 +35,16 @@ from __future__ import print_function
 import codecs  # കൊടച്ചക്രം
 import os  # ശീലക്കുട
 from libindic.normalizer import Normalizer
+from .reader import Reader
 
 
 '''
 പയ്യന്റെ ക്ലാസ് ഉന്നതകുലമാകുന്നു. ച്ചാല്‍ ആഢ്യന്‍ തന്നെ.
 ഏ ക്ലാസ് പയ്യന്‍...!
 '''
+
+prebase_letters = ["േ", "ൈ", "്ര", "െ"]
+postbase_letters = ["ാ", "ി", "ീ", "ു", "ൂ", "ൃ", "ൗ", "ം", "ഃ", "്യ", "്വ"]
 
 
 class Payyans():
@@ -100,59 +104,40 @@ class Payyans():
         return ascii_text
 
     def ASCII2Unicode(self, ascii_text, font):
-        ascii_text = self.normalizer.normalize(ascii_text)
-        index = 0
-        post_index = 0
-        prebase_letter = ""
-        postbase_letter = ""  # "‌‌്യ", "്വ"
-        unicode_text = ""
-        next_ucode_letter = ""
         self.direction = "a2u"
         self.mapping_filename = os.path.join(os.path.dirname(__file__),
                                              'maps', font + ".map")
         self.rulesDict = self.LoadRules()
-        while index < len(ascii_text):
-            for charNo in [2, 1]:
-                letter = ascii_text[index:index + charNo]
-                if letter in self.rulesDict:
-                    unicode_letter = self.rulesDict[letter]
-                    if(self.isPrebase(unicode_letter)):  # സ്വരചിഹ്നമാണോ?
-                        prebase_letter = unicode_letter
-                    else:  # സ്വരചിഹ്നമല്ല
-                        '''
-                        എങ്കില്‍ വ്യഞ്ജനത്തിനു ശേഷം
-                        പോസ്റ്റ്-ബേസ് ഉണ്ടോ എന്നു നോക്കൂ
-                        '''
-                        post_index = index + charNo
-                        if post_index < len(ascii_text):
-                            letter = ascii_text[post_index]
-                            if letter in self.rulesDict:
-                                next_ucode_letter = self.rulesDict[letter]
-                                if self.isPostbase(next_ucode_letter):
-                                    postbase_letter = next_ucode_letter
-                                    index = index + 1
-                        if ((unicode_letter.encode('utf-8') == "എ")
-                                | (unicode_letter.encode('utf-8') == "ഒ")):
-                            vowel_sign = self.getVowelSign(prebase_letter,
-                                                           unicode_letter)
-                            unicode_text = (unicode_text
-                                            + postbase_letter
-                                            + vowel_sign)
-                        else:
-                            unicode_text = (unicode_text
-                                            + unicode_letter
-                                            + postbase_letter
-                                            + prebase_letter)
-                        prebase_letter = ""
-                        postbase_letter = ""
-                    index = index + charNo
-                    break
-                else:
-                    if charNo == 1:
-                        unicode_text = unicode_text + letter
-                        index = index + 1
-                        break
-                    unicode_letter = letter
+
+        prebase_ascii_letters = [k for k, v in self.rulesDict.items() if v in prebase_letters]
+        postbase_ascii_letters = [k for k, v in self.rulesDict.items() if v in postbase_letters]
+        
+        # ആദ്യത്തെ ഓട്ടം: മുമ്പേ ഗമിക്കും പ്രീബേസിനെ പിടിച്ച് തോളില്‍ കയറ്റുക
+        ascii_text = Reader(ascii_text)
+        transposed_text = ""
+        prebase = ""
+        while ascii_text.has_more_char():
+            letter = ascii_text.next_char()
+            if letter in prebase_ascii_letters:
+                prebase = letter + prebase
+            elif letter in postbase_ascii_letters:
+                transposed_text += letter + prebase
+                prebase = ""
+            else:
+                transposed_text += letter
+                if ascii_text.peek_next() not in postbase_ascii_letters:
+                    transposed_text += prebase
+                    prebase = ""
+        if prebase != "":
+            transposed_text += prebase
+        
+        # രണ്ടാമത്തെ ഓട്ടം: പച്ച മലയാളം
+        translator = str.maketrans({k: v for k, v in self.rulesDict.items() if len(k) == 1})
+        unicode_text = transposed_text.translate(translator)
+
+        # മൂന്നാമത്തെ ഓട്ടം: ചേരുംപടി ചേര്‍ക്കുക
+        unicode_text = self.normalizer.normalize(unicode_text)
+
         return unicode_text  # മതം മാറ്റി തിരിച്ചു കൊടുക്ക്വാ !
 
     def getVowelSign(self, vowel_letter, vowel_sign_letter):
@@ -177,12 +162,7 @@ class Payyans():
         "തരികിട തരികിടോ ധീംതരികിട" (തരികിട തരികിടയാല്‍)
          എന്നു പയ്യന്റെ ഗുരു പയ്യഗുരു പയ്യെ മൊഴിഞ്ഞിട്ടുണ്ടു്.
         '''
-        unicode_letter = letter.encode('utf-8')
-        prebase_letters = ["േ", "ൈ", "ൊ", "ോ", "ൌ", "്ര", "െ"]
-        if (unicode_letter in prebase_letters):
-            return True  # "ഇതു സത്യം... അ...സത്യം.... അസത്യം...!"
-        else:
-            return False
+        return letter in prebase_letters
 
     def isPostbase(self, letter):
         '''
@@ -192,11 +172,7 @@ class Payyans():
         വ്യഞ്ജനം+പോസ്റ്റ്-ബേസ് കഴിഞ്ഞേ പ്രീ-ബേസ് ചേര്‍ക്കാവൂ!
         ഹൊ, പയ്യന്‍ പാണിനീശിഷ്യനാണ്!!
         '''
-        unicode_letter = letter.encode('utf-8')
-        if ((unicode_letter == "്യ") | (unicode_letter == "്വ")):
-            return True
-        else:
-            return False
+        return letter in postbase_letters
 
     def LoadRules(self):
         '''
