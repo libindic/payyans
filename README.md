@@ -1,10 +1,5 @@
 # LibIndic Payyans
 
-
-[![Build Status](https://travis-ci.org/libindic/payyans.svg?branch=master)](https://travis-ci.org/libindic/payyans)
-[![Coverage Status](https://coveralls.io/repos/github/libindic/payyans/badge.svg?branch=master)](https://coveralls.io/github/libindic/payyans?branch=master)
-
-
 LibIndic's Payyans module may be used to convert texts encoded in ASCII format
 to Unicode and vice-versa. More fonts can be added by placing their maps in
 `libindic/payyans/maps` folder.

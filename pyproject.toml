@@ -1,0 +1,46 @@
+[project]
+name = "libindic-payyans"
+authors = [
+  { name = "Santhosh Thottingal", email = "santhosh.thottingal@gmail.com" },
+  { name = "Nishan Naseer", email = "nishan.naseer@gmail.com" },
+  { name = "Manu S Madhav", email = "manusmad@gmail.com" },
+  { name = "Rajeesh K Nambiar", email = "rajeeshknambiar@gmail.com" },
+  { name = "Akshay S Dinesh", email = "asdofindia@gmail.com" },
+  { name = "Balasankar C", email = "balasankarc@autistici.org" },
+  { name = "Jishnu Mohan", email = "jishnu7@gmail.com" },
+]
+description = "ASCII to Unicode converter"
+requires-python = ">=3.7"
+license = { text = "LGPL-3.0" }
+version = "2.0"
+readme = "README.md"
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "License :: DFSG approved",
+  "License :: OSI Approved :: GNU Lesser General Public License v2 or later (LGPLv2+)",
+  "Operating System :: OS Independent",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Information Technology",
+  "Programming Language :: Python",
+]
+dependencies = [
+  "libindic-normalizer@git+https://github.com/libindic/normalizer.git"
+]
+
+[project.urls]
+Homepage = "https://libindic.org/payyans"
+
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+
+[tool.setuptools.package-data]
+"*" = ["templates/libindic.payyans.html", "maps/*.map"]
+
+[project.entry-points."libindic.api.rest"]
+unicode2ascii = "payyans.expose:unicode2ascii"
+ascii2unicode = "payyans.expose:ascii2unicode"
+
+[tool.distutils.bdist_wheel]
+universal = true
