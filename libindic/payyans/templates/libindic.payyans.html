@@ -59,21 +59,11 @@ $(document).ready(function() {
 
     <div class="form-group">
         <label class="control-label col-sm-1" for="font">Font</label>
-
         <div class="col-sm-3">
             <select id="font" name="font" class="form-control">
-                <option value="ambili">Ambili</option>
-                <option value="valluvar">Valluvar</option>
-                <option value="karthika">Karthika</option>
-                <option value="matweb">Mathrubhumi</option>
-                <option value="manorama">Manorama</option>
-                <option value="revathi">Revathi</option>
-                <option value="uma">Uma</option>
-                <option value="panchari">Panchari</option>
-                <option value="nandini">Nandini (ML-TT)</option>
-                <option value="haritha">Haritha</option>
-                <option value="indulekha">Indulekha</option>
-		<option value="banglapedia">Banglapedia</option>
+            {% for font in data.fonts %}
+                <option value="{{ font }}">{{ font }}</option>
+            {% endfor %}
             </select>
         </div>
 

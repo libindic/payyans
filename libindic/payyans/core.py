@@ -35,6 +35,7 @@ from __future__ import print_function
 import codecs  # കൊടച്ചക്രം
 import os  # ശീലക്കുട
 from libindic.normalizer import Normalizer
+from libindic.unicode_conversion_maps import maps
 from .reader import Reader
 
 
@@ -55,16 +56,15 @@ class Payyans():
         self.mapping_filename = ""
         self.rulesDict = None
         self.pdf = 0
+        self.data = {"fonts": maps.keys()}
         self.normalizer = Normalizer()
 
     def Unicode2ASCII(self, unicode_text, font):
         unicode_text = self.normalizer.normalize(unicode_text)
         index = 0
         ascii_text = ""
-        self.direction = "u2a"
-        self.mapping_filename = os.path.join(os.path.dirname(__file__),
-                                             'maps', font + ".map")
-        self.rulesDict = self.LoadRules()
+        rulesReverse = maps[font]
+        self.rulesDict = {v: k for k, v in rulesReverse.items()}
         while index < len(unicode_text):
             '''കൂട്ടക്ഷരങ്ങള്‍ക്കൊരു കുറുക്കുവഴി'''
             for charNo in [3, 2, 1]:
@@ -104,10 +104,7 @@ class Payyans():
         return ascii_text
 
     def ASCII2Unicode(self, ascii_text, font):
-        self.direction = "a2u"
-        self.mapping_filename = os.path.join(os.path.dirname(__file__),
-                                             'maps', font + ".map")
-        self.rulesDict = self.LoadRules()
+        self.rulesDict = maps[font]
 
         prebase_ascii_letters = [k for k, v in self.rulesDict.items() if v in prebase_letters]
         postbase_ascii_letters = [k for k, v in self.rulesDict.items() if v in postbase_letters]
@@ -174,68 +171,12 @@ class Payyans():
         '''
         return letter in postbase_letters
 
-    def LoadRules(self):
-        '''
-        ഈ സംഭവമാണു് മാപ്പിങ്ങ് ഫയല്‍ എടുത്തു് വായിച്ചു പഠിക്കുന്നതു്.
-        '''
-        # if(self.rulesDict):
-        #    return self.rulesDict
-        rules_dict = dict()
-        line = []
-        line_number = 0
-        rules_file = codecs.open(self.mapping_filename, encoding='utf-8',
-                                 errors='ignore')
-        while True:
-            '''
-            ലൈന്‍ നമ്പര്‍ , മാപ്പിങ്ങ് ഫയലില്‍ തെറ്റുണ്ടെങ്കില്‍
-            പറയാന്‍ ആവശ്യാണു്
-            '''
-            line_number = line_number + 1
-            original_text = rules_file.readline()
-            try:
-                text = unicode(original_text)  # noqa: F821
-            except BaseException:
-                text = original_text
-            if text == "":
-                break
-            '''കമന്റടിച്ചേ മത്യാവൂന്നു വെച്ചാ ആവാം. ഒട്ടും മുഷിയില്ല്യ'''
-            if text[0] == '#':
-                continue
-                '''
-                കമന്റടി പതിവുപോലെ മൈന്റ് ചെയ്യണ്ട ഒന്നും കണ്ടില്യാ
-                കേട്ടില്യാന്നു വെച്ചു നടന്നോളൂ(മനസ്സില്‍ ചിരിച്ചോളൂ)
-                '''
-            line = text.strip()
-            if(line == ""):
-                continue
-                '''ലൈനൊന്നും ല്യാ, മോശം.. ങും പോട്ടെ. വേറെ ലൈന്‍ പിടിക്കാം'''
-            if(len(line.split("=")) != 2):
-                '''എന്തോ പ്രശ്നണ്ടു്. ന്നാ അതങ്ങടു തുറന്നു പറഞ്ഞേക്കാം'''
-                print("Error: Syntax Error in the Ascii to Unicode Map "
-                      "in line number ", line_number)
-                print("Line: " + text)
-                '''പരിപാടി നിര്‍ത്താം '''
-                return 2  # Error - Syntax error in Mapping file
-            '''ഇടതന്‍'''
-            lhs = line.split("=")[0]
-            '''വലതന്‍'''
-            rhs = line.split("=")[1]
-            '''ഇതിനിടക്കിനി മൂന്നാമനു സ്കോപ്പിണ്ടോ? '''
-            '''മറക്കാതെ ഇരിക്കട്ടെ. ആവശ്യം വരും '''
-            lhs = lhs.strip()
-            rhs = rhs.strip()
-            if self.direction == 'a2u':
-                rules_dict[lhs] = rhs
-            else:
-                rules_dict[rhs] = lhs
-        rules_file.close()
-        return rules_dict
-
     def get_module_name(self):
         return "Payyans Unicode-ASCII Converter"
 
     def get_info(self):
         return "ASCII data - Unicode Convertor based on font maps"
+
 
 
 def getInstance():

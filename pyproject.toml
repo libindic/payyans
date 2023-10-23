@@ -24,7 +24,8 @@ classifiers = [
   "Programming Language :: Python",
 ]
 dependencies = [
-  "libindic-normalizer@git+https://github.com/libindic/normalizer.git"
+  "libindic-normalizer@git+https://github.com/libindic/normalizer.git",
+  "libindic-unicode-conversion-maps"
 ]
 
 [project.urls]
@@ -36,7 +37,7 @@ build-backend = "setuptools.build_meta"
 
 
 [tool.setuptools.package-data]
-"*" = ["templates/libindic.payyans.html", "maps/*.map"]
+"*" = ["templates/libindic.payyans.html"]
 
 [project.entry-points."libindic.api.rest"]
 unicode2ascii = "payyans.expose:unicode2ascii"
