@@ -63,7 +63,7 @@ class Payyans():
         unicode_text = self.normalizer.normalize(unicode_text)
         index = 0
         ascii_text = ""
-        rulesReverse = maps[font]
+        rulesReverse = self.getRules(font)
         self.rulesDict = {v: k for k, v in rulesReverse.items()}
         while index < len(unicode_text):
             '''കൂട്ടക്ഷരങ്ങള്‍ക്കൊരു കുറുക്കുവഴി'''
@@ -104,7 +104,7 @@ class Payyans():
         return ascii_text
 
     def ASCII2Unicode(self, ascii_text, font):
-        self.rulesDict = maps[font]
+        self.rulesDict = self.getRules(font)
 
         prebase_ascii_letters = [k for k, v in self.rulesDict.items() if v in prebase_letters]
         postbase_ascii_letters = [k for k, v in self.rulesDict.items() if v in postbase_letters]
@@ -171,12 +171,32 @@ class Payyans():
         '''
         return letter in postbase_letters
 
+    def getRules(self, font):
+        if font in maps.keys():
+            return maps[font]
+
+        old_maps = {
+            'haritha': 'Haritha',
+            'ambili': 'ML-TTAmbili',
+            'karthika': 'ML-TTKarthika',
+            'nandini': 'ML-TTNandini',
+            'revathi': 'ML-TTRevathi',
+            'indulekha': 'MLB-TTIndulekha',
+            'manorama': 'Manorama',
+            'matweb': 'Matweb',
+            'valluvar': 'TM-TTValluvar'
+            }
+
+        if font in old_maps.keys():
+            return maps[old_maps[font]];
+
+        raise AttributeError(f"No such map found: {font}")
+
     def get_module_name(self):
         return "Payyans Unicode-ASCII Converter"
 
     def get_info(self):
         return "ASCII data - Unicode Convertor based on font maps"
-
 
 
 def getInstance():
