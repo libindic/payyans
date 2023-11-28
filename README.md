@@ -5,10 +5,8 @@ to Unicode and vice-versa. More fonts can be added by placing their maps in
 `libindic/payyans/maps` folder.
 
 ## Installation
-1. Clone the repository `git clone https://github.com/libindic/payyans.git`
-2. Change to the cloned directory `cd payyans`
-3. Generating archive `python3 -m build`
-4. Install using pip `pip install dist/libindic-payyans*.tar.gz`
+
+```python -m pip install -e 'git+https://github.com/libindic/payyans.git#egg=libindic-payyans'```
 
 ## Usage
 ```
