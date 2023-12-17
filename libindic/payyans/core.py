@@ -137,6 +137,10 @@ class Payyans():
 
         return unicode_text  # മതം മാറ്റി തിരിച്ചു കൊടുക്ക്വാ !
 
+    def listAvailableMaps(self):
+        for key in maps.keys():
+            print(key, end=", ")
+
     def getVowelSign(self, vowel_letter, vowel_sign_letter):
         vowel = vowel_letter.encode('utf-8')
         vowel_sign = vowel_sign_letter.encode('utf-8')
