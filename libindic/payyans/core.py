@@ -121,10 +121,8 @@ class Payyans():
                 transposed_text += letter + prebase
                 prebase = ""
             else:
-                transposed_text += letter
-                if ascii_text.peek_next() not in postbase_ascii_letters:
-                    transposed_text += prebase
-                    prebase = ""
+                transposed_text += letter + prebase
+                prebase = ""
         if prebase != "":
             transposed_text += prebase
         
