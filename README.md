@@ -10,14 +10,19 @@ to Unicode and vice-versa. More fonts can be added by placing their maps in
 
 ## Usage
 ```
->>> from libindic.payyans import Payyans
->>> instance = Payyans()
->>> result = instance.ASCII2Unicode("aebmfw", "ambili")
->>> print(result)
-മലയാളം
->>> result2 = instance.Unicode2ASCII(u"കേരളം", "ambili")
->>> print(result2)
-tIcfw
+from libindic.payyans import Payyans
+
+instance = Payyans()
+
+result = instance.ASCII2Unicode("aebmfw", "ambili")
+print(result)  # മലയാളം
+
+result2 = instance.Unicode2ASCII(u"കേരളം", "ambili")
+print(result2)  # tIcfw
+
+instance.listAvailableMaps()  # Haritha, ML-TTAmbili, ML-TTKarthika, ML-TTNandini, ML-TTRevathi, MLB-TTIndulekha, Manorama, Matweb, TM-TTValluvar, banglapedia, charaka, panchari, revathi, uma
+
+instance.printMap('Haritha')  # prints the whole mapping file
 ```
 
 [Watch this video to know more about what ASCII and Unicode encodings are](https://smc.org.in/articles/ascii-unicode-fonts)
