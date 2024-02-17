@@ -13,16 +13,32 @@ class PayyansTest(TestCase):
         self.payyans = Payyans()
 
     def test_ascii2unicode(self):
-        self.assertEqual(
-            self.payyans.ASCII2Unicode(
-                "aebmfw", "ML-TTAmbili"), u"മലയാളം")
+        self.assertEqual(self.payyans.ASCII2Unicode("aebmfw", "ML-TTAmbili"), "മലയാളം")
 
     def test_unicode2ascii(self):
         self.assertEqual(self.payyans.Unicode2ASCII("മലയാളം", "ML-TTAmbili"), "aebmfw")
-   
+
     def test_double_swaras(self):
-        inputs = ["ss{U", "t{]aw", "kvss{XWX", "{ZpXKXnbnÂ"]
-        expected = ["ഡ്രൈ", "പ്രേമം", "സ്ത്രൈണത", "ദ്രുതഗതിയില്‍"]
+        inputs = [
+            ",",
+            "ss{U",
+            "t{]aw",
+            "kvss{XWX",
+            "{ZpXKXnbnÂ",
+            r"\nt¡mf sSkv‌e",
+            r"{][m\ambpw C´y³ kwØm\§fmb lnamNÂ {]tZiv, P½p ImivaoÀ F¶nhnS§fnÂ Xmakn¡p¶ Hcp AÀ²þCt´mþBcy³ hwiobþ`mjm]camb tKm{XamWv KÍn",
+            r"Hcp hÀj¯nÂ s^{_phcn amk¯n\p 29 Znhkw Ds­¦nÂ B hÀjs¯ A[nhÀjw F¶p ]dbp¶p. Hcp hÀjw A[nhÀjamtWm F¶v IW¡m¡p¶ AÂsKmcnXamWv Nn{X¯nÂ.",
+        ]
+        expected = [
+            ",",
+            "ഡ്രൈ",
+            "പ്രേമം",
+            "സ്ത്രൈണത",
+            "ദ്രുതഗതിയില്‍",
+            "നിക്കോള ടെസ്‌ല",
+            "പ്രധാനമായും ഇന്ത്യന്‍ സംസ്ഥാനങ്ങളായ ഹിമാചല്‍ പ്രദേശ്, ജമ്മു കാശ്മീര്‍ എന്നിവിടങ്ങളില്‍ താമസിക്കുന്ന ഒരു അര്‍ദ്ധ-ഇന്തോ-ആര്യന്‍ വംശീയ-ഭാഷാപരമായ ഗോത്രമാണ് ഗഡ്ഡി",
+            "ഒരു വര്‍ഷത്തില്‍ ഫെബ്രുവരി മാസത്തിനു 29 ദിവസം ഉണ്ടെങ്കില്‍ ആ വര്‍ഷത്തെ അധിവര്‍ഷം എന്നു പറയുന്നു. ഒരു വര്‍ഷം അധിവര്‍ഷമാണോ എന്ന് കണക്കാക്കുന്ന അല്‍ഗൊരിതമാണ് ചിത്രത്തില്‍.",
+        ]
         for i in range(len(inputs)):
             actual = self.payyans.ASCII2Unicode(inputs[i], "ML-TTKarthika")
             self.assertEqual(actual, expected[i])

@@ -131,7 +131,7 @@ class Payyans():
         unicode_text = transposed_text.translate(translator)
 
         # മൂന്നാമത്തെ ഓട്ടം: ചേരുംപടി ചേര്‍ക്കുക
-        unicode_text = self.normalizer.normalize(unicode_text)
+        unicode_text = self.normalizer.normalize(unicode_text, keep_punctuations=True)
 
         return unicode_text  # മതം മാറ്റി തിരിച്ചു കൊടുക്ക്വാ !
 
