@@ -20,11 +20,9 @@ print(result)  # മലയാളം
 result2 = instance.Unicode2ASCII(u"കേരളം", "ambili")
 print(result2)  # tIcfw
 
-maps = instance.listAvailableMaps()
-print(maps)  # Haritha, ML-TTAmbili, ML-TTKarthika, ML-TTNandini, ML-TTRevathi, MLB-TTIndulekha, Manorama, Matweb, TM-TTValluvar, banglapedia, charaka, panchari, revathi, uma
+instance.listAvailableMaps()  # Haritha, ML-TTAmbili, ML-TTKarthika, ML-TTNandini, ML-TTRevathi, MLB-TTIndulekha, Manorama, Matweb, TM-TTValluvar, banglapedia, charaka, panchari, revathi, uma
 
-hatritha_map = instance.printMap('Haritha')
-print(hatritha_map)  # prints the whole mapping file
+instance.printMap('Haritha')  # prints the whole mapping file
 ```
 
 [Watch this video to know more about what ASCII and Unicode encodings are](https://smc.org.in/articles/ascii-unicode-fonts)
