@@ -57,7 +57,7 @@ class Payyans():
         self.rulesDict = None
         self.pdf = 0
         self.data = {"fonts": maps.keys()}
-        self.normalizer = Normalizer()
+        self.normalizer = Normalizer("ml")
 
     def Unicode2ASCII(self, unicode_text, font):
         unicode_text = self.normalizer.normalize(unicode_text)
@@ -71,7 +71,6 @@ class Payyans():
                 letter = unicode_text[index:index + charNo]
                 if letter in self.rulesDict:
                     ascii_letter = self.rulesDict[letter]
-                    letter = letter.encode('utf-8')
                     '''
                     കിട്ടിയ അക്ഷരങ്ങളുടെ അപ്പുറത്തും ഇപ്പുറത്തും
                     സ്വരചിഹ്നങ്ങള്‍ ഫിറ്റ് ചെയ്യാനുള്ള ബദ്ധപ്പാട്
@@ -131,7 +130,7 @@ class Payyans():
         unicode_text = transposed_text.translate(translator)
 
         # മൂന്നാമത്തെ ഓട്ടം: ചേരുംപടി ചേര്‍ക്കുക
-        unicode_text = self.normalizer.normalize(unicode_text, keep_punctuations=True)
+        unicode_text = self.normalizer.normalize(unicode_text)
 
         return unicode_text  # മതം മാറ്റി തിരിച്ചു കൊടുക്ക്വാ !
 
